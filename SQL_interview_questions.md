@@ -1,6 +1,6 @@
 ## SQL
 
-+ [What is SQL?](#What is SQL?)
++ [What is SQL?](#What-is-SQL?)
 + [Назовите преимущества использования коллекций](#Назовите-преимущества-использования-коллекций)
 + [Какие данные могут хранить коллекции?](#Какие-данные-могут-хранить-коллекции)
 + [Какие есть типы коллекций? Как они характеризуются?](#Какие-есть-типы-коллекций-Как-они-характеризуются)
@@ -56,7 +56,7 @@ SQL is the standard language to communicate with Relational Database Systems. Al
 There are different versions of the SQL language.
 However, they all support at least the major commands (such as SELECT, UPDATE, DELETE, INSERT, WHERE) in a similar manner.
 
-[к оглавлению](#collections-light)
+[к оглавлению](#SQL)
 
 ## Назовите преимущества использования коллекций.
 + отсутствует необходимость следить за размерами коллекции (в отличае от массива)
