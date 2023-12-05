@@ -460,7 +460,18 @@ Unlike TRUNCATE that resets the table structure, DROP command completely frees t
 | Requires ALTER and CONTROL permissions on the table schema and table respectively, to be able to perform this command| Only requires the ALTER permissions to truncate the table |
 | DROP command is much slower than TRUNCATE but faster than DELETE| It is faster than both DROP and DELETE commands |
 
-[to content](#SQL)
+
+Получить информацию о применяемом уровне изоляции поможет метод Connection getTransactionIsolation().
+
+| Drop| TRUNCATE |
+| ---| --- |
+| The DROP command in SQL removes an entire table from a database including its definition, indexes, constraints, data etc| The TRUNCATE command is used to remove all of the rows from a table, regardless of whether or not any conditions are met and resets the table definition |
+| TRANSACTION_READ_COMMITTED| Supported| Prevented| Allowed| Allowed |
+| TRANSACTION_READ_UNCOMMITTED| Supported| Allowed| Allowed| Allowed |
+| TRANSACTION_REPEATABLE_READ| Supported| Prevented| Prevented| Allowed |
+| TRANSACTION_SERIALIZABLE| Supported| Prevented| Prevented| Prevented |
+
+[к оглавлению](#SQL)
 	
 ## Clone Tables
 Cloning operation in SQL allows the user to create the exact copy of an existing table along with its definition, that is completely independent from the original table. Thus, if any changes are made to the cloned table, they will not be reflected in the original table. This operation comes in handy during testing processes, where there is a need to perform sample testing using the existing database tables.
