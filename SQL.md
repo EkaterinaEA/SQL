@@ -33,19 +33,21 @@
 + [TRUNCATE vs DELETE](#TRUNCATE-vs-DELETE)
 + [TRUNCATE vs DROP](#TRUNCATE-vs-DROP)
 + [Clone Tables](#Clone-Tables)
-+ [В чем отличия TreeSet и HashSet?](#В-чем-отличия-TreeSet-и-HashSet)
-+ [Что будет, если добавлять элементы в TreeSet по возрастанию?](#Что-будет-если-добавлять-элементы-в-TreeSet-по-возрастанию)
-+ [Какие реализации SortedSet вы знаете и в чем их особенность?](#Какие-реализации-SortedSet-вы-знаете-и-в-чем-их-особенность)
-+ [В каких случаях разумно использовать массив, а не ArrayList?](#В-каких-случаях-разумно-использовать-массив-а-не-ArrayList)
-+ [Какие коллекции синхронизированы?](#Какие-коллекции-синхронизированы)
-+ [Как получить синхронизированную коллекцию из не синхронизированной?](#Как-получить-синхронизированную-коллекцию-из-не-синхронизированной)
-+ [Как получить коллекцию только для чтения?](#Как-получить-коллекцию-только-для-чтения)
-+ [В чем разница между Iterator и Enumeration?](#В-чем-разница-между-Iterator-и-Enumeration)
-+ [Как преобразовать массив строк в ArrayList](#Как-преобразовать-массив-строк-в-ArrayList)
-+ [Как отсортировать список в обратном порядке?](#Как-отсортировать-список-в-обратном-порядке)
-+ [Временная сложность](#Временная-сложность)
-+ [Как работает HashMap](#Как-работает-HashMap)
-
++ [Temporary Tables](#Temporary-Tables)
++ [ALTER TABLE Command](#ALTER-TABLE-Command)
++ [Delete Table](#Delete-Table)
++ [Constraints](#Constraints)
++ [INSERT Query](#INSERT-Query)
++ [SELECT Query](#SELECT-Query)
++ [Select Into](#Select-Into)
++ [Insert Into... Select](# Insert-Into...-Select)
++ [UPDATE Query](#UPDATE-Query)
++ [DELETE Query](#DELETE-Query)
++ [SORTING Results](#SORTING-Results)
++ [CREATE View](#CREATE-View)
++ [UPDATE View](#UPDATE-View)
++ [DROP or DELETE View](#DROP-or-DELETE-View)
++ [Rename View](#Rename-View)
 
 ## What is SQL?
 SQL is a standard language for accessing and manipulating databases.
@@ -506,149 +508,203 @@ Deep Cloning operation is a combination of simple cloning and shallow cloning. I
 
 [to content](#SQL)
 	
-## В чем отличия TreeSet и HashSet?
-TreeSet обеспечивает упорядоченно хранение элементов в виде красно-черного дерева. 
-Сложность выполнения основных операций в TreeSet lg N. HashSet использует для хранения элементов такой же подход, что и HashMap, 
-за тем отличием, что в HashSet в качестве ключа выступает сам элемент, кроме того HashSet (как и HashMap) 
-не поддерживает упорядоченное хранение элементов и обеспечивает временную сложность выполнения операций аналогично HashMap.
+## Temporary Tables
+they are tables that are created in a database to store data temporarily. They can perform operations that are similar to operations of permanent database tables like Create, Update, Delete, Insert and also other operations like Join. But these tables will be automatically deleted once the current client session is terminated.
 
-[к оглавлению](#collections-light)
-	
-## Что будет, если добавлять элементы в TreeSet по возрастанию?
-На самом, деле, как выше упоминалось в основе TreeSet лежит красно-черное дерево, 
-которое умеет само себя балансировать. В итоге, TreeSet все равно в каком порядке вы добавляете в него элементы, 
-преимущества этой структуры данных будут сохраняться.
+**Types of Temporary Tables**
++ Local Temporary Tables
++ Global Temporary Tables
 
-[к оглавлению](#collections-light)
-	
-## Какие реализации SortedSet вы знаете и в чем их особенность?
-TreeSet 
+**Local Temporary Tables**
 
-[к оглавлению](#collections-light)
-	
-## В каких случаях разумно использовать массив, а не ArrayList?
-Если коротко, то Oracle пишет — используйте ArrayList вместо массивов. 
-Если ответить на этот вопрос нужно по-другому, то можно сказать следующее: массивы могут быть быстрее и кушать меньше памяти. 
-Списки теряют в производительности из-за возможности автоматического увеличения размера и сопутствующих проверок.
+A Local Temporary Table is accessible only in the session that has created it. It is automatically deleted when the connection that has created it gets closed. To create Local Temporary Table, a single “#” is used as the prefix of a table name. To manually drop this temporary table by using the “DROP TABLE #temp-table” query. There will be Random Numbers are appended to the Name of Table Name. If the Temporary Table is created inside the stored procedure, it get dropped automatically upon the completion of stored procedure execution.
 
-[к оглавлению](#collections-light)
-	
-## Какие коллекции синхронизированы?
-Для этого используется пакет Concurrent. А так @Deprecated HashTable, Vector.
+**Global Temporary Tables**
+Global Temporary Tables are visible to all connections and Dropped when the last connection referencing the table is closed. Global Table Name must have an Unique Table Name. There will be no random Numbers suffixed at the end of the Table Name.
+To create a Global Temporary Table, add the “##” symbol before the table name.
 
-[к оглавлению](#collections-light)
+[to content](#SQL)
 	
-## Как получить синхронизированную коллекцию из не синхронизированной?
-```java
-Collections.synchronizedList(list);
-Collections.synchronizedSet(set);
-Collections.synchronizedMap(map);
-```
-[к оглавлению](#collections-light)
-	
-## Как получить коллекцию только для чтения?
-```java
-	Collections.unmodifiableList(list);
-	Collections.unmodifiableSet(set);
-	Collections.unmodifiableMap(map);
-```
-[к оглавлению](#collections-light)
-	
-## В чем разница между Iterator и Enumeration?
-Enumeration в два раза быстрее Iterator и использует меньше памяти. 
-Iterator потокобезопасен, т.к. не позволяет другим потокам модифицировать коллекцию при переборе. 
-Enumeration можно использовать только для read-only коллекций. Так же у него отсутствует метод remove();
+## ALTER TABLE Command
+is used to modify a table's structure by adding, deleting columns in an existing table. You can also use the ALTER TABLE command to add and drop various constraints on an existing table.
 
-[к оглавлению](#collections-light)
-	
-## Как преобразовать массив строк в ArrayList
-```Arrays.asList(words)```
+**ALTER TABLE vs UPDATE**
+while ALTER TABLE interacts with the structure of a table to modify it, UPDATE only interacts with the data present in the table without disturbing its structure.
 
-[к оглавлению](#collections-light)
+[to content](#SQL)
 	
-## Как отсортировать список в обратном порядке?
-```List reversedList = Collections.reverse(list)```
+## Delete Table
+The **SQL DELETE TABLE** command is used to delete the existing records from a table in a database. it does not remove the table structure but only the data contained within it.
 
-[к оглавлению](#collections-light)
+[to content](#SQL)
+	
+## Constraints
+Constraints are the rules enforced on the data columns of a table. These are used to limit the type of data that can go into a table.
+Constraints could be either on a column level or a table level. 
+
+**NOT NULL Constraint**
+Ensures that a column cannot have a NULL value.
+
+**DEFAULT Constraint**
+Provides a default value for a column when none is specified.
+
+**UNIQUE Key**
+Ensures that all the values in a column are different.
+
+**PRIMARY Key**
+Uniquely identifies each row/record in a database table.
+
+**FOREIGN Key**
+Uniquely identifies a row/record in any another database table.
+
+**CHECK Constraint**
+Ensures that all values in a column satisfy certain conditions.
+
+**INDEX Constraint**
+Used to create and retrieve data from the database very quickly.
+
+Constraints can be specified when a table is created with the CREATE TABLE statement or you can use the ALTER TABLE statement to create constraints even after the table is created.
+
+**Dropping Constraints**
+
+Integrity constraints are used to ensure accuracy and consistency of the data in a relational database. Data integrity is handled in a relational database through the concept of referential integrity.
+
+There are many types of integrity constraints that play a role in Referential Integrity (RI). These constraints include Primary Key, Foreign Key, Unique Constraints and other constraints which are mentioned above.
+
+[to content](#SQL)
+	
+## INSERT Query
+
+The SQL INSERT INTO Statement is used to add new rows of data to a table in the database.
+
+The INSERT statement will only accept the data that follows all the attributes of a column in a table. The data inserted into a table must have same datatypes, satisfy the constraints (if any), etc. If the inserted data does not satisfy any of the attributes, the INSERT INTO statement displays an error.
+
+**Populating one table using another table**
++ Using INSERT... SELECT
++ Using INSERT... TABLE
+
+[to content](#SQL)
+	
+## SELECT Query
+is used to fetch the data.
+
+**Computing using SELECT**
+SELECT can also be used to retrieve the results of various mathematical computations. 
+
+**Aliasing a Column in SELECT Statement**
+Whenever a column name in a table is too difficult to read and understand, database provides a method to alias this column name into another understandable and relative name. (using AS keyword)
+
+[to content](#SQL)
+	
+## Select Into
+The **SQL SELECT INTO command** creates a new table and inserts data from an existing table into the newly created table. 
+
+SELECT INTO statement does not preserve any indexes, constraints, or other properties of the original table, and the new table will not have any primary keys or foreign keys defined by default. Therefore, you may need to add these properties to the new table manually if necessary.
+
+[to content](#SQL)
+	
+## Insert Into... Select
+INSERT INTO... SELECT statement is used to add/insert one or more new rows (records) from an existing table to another table.
+This statement is a combination of two different statements: INSERT INTO and SELECT.
+
+**Inserting the top N rows required**
+The TOP clause details the number of rows from the query that should be added to the target table.
+
+[to content](#SQL)
+	
+## UPDATE Query
+The SQL **UPDATE** Query is used to modify the existing records in a table. 
+
+[to content](#SQL)
+	
+## DELETE Query
+The SQL **DELETE** Query is used to delete the existing records from a table.
+
+[to content](#SQL)
   
-## Временная сложность	
-					                    Среднее										Худшее
-							Индекс 	Поиск		Вставка		Удаление 		Индекс 	        Поиск		Вставка		Удаление	
-    ArrayList				O(1)    	O(n)		O(n)		O(n)			O(1)	        O(n)		O(n)		O(n)
-	Vector					O(1)	        O(n)		O(n)		O(n)			O(1)	        O(n)		O(n)		O(n)
-	LinkedList				O(n)	        O(n)		O(1)		O(1)			O(n)	        O(n)		O(1)		O(1)
-	
-	HashTable				n/a		O(1)		O(1)		O(1)			n/a		O(n)		O(n)		O(n)
-	HashMap					n/a		O(1)		O(1)		O(1)			n/a		O(n)		O(n)		O(n)
-	LinkedHashMap			        n/a		O(1)		O(1)		O(1)			n/a		O(n)		O(n)		O(n)
-	TreeMap					n/a		O(log(n))	O(log(n))	O(log(n))		n/a		O(log(n))	O(log(n))	O(log(n))
-	
-	HashSet					n/a		O(1)		O(1)		O(1)			n/a		O(n)		O(n)		O(n)
-	LinkedHashSet			        n/a		O(1)		O(1)		O(1)			n/a		O(n)		O(n)		O(n)
-	TreeSet					n/a		O(log(n))	O(log(n))	O(log(n))		n/a		O(log(n))	O(log(n))	O(log(n))
+## SORTING Results	
+The SQL ORDER BY clause is used to sort the data in ascending or descending and preferred order. 
+**Sorting Results in Ascending Order** - ASC keyword (or just default)
+**Sorting Results in Descending Order** - DESC" keyword
 
-[к оглавлению](#collections-light)
+**Sorting Results in a Preferred Order**
 
-## Как работает HashMap
-HashMap has an inner class **Entry**:
-```java
-		static class Entry<K ,V> implements Map.Entry<K, V>
-		{
-			final K key;
-			V value;
-			Entry<K ,V> next;
-			final int hash;
-			...//More code goes here
-		}
-```
-**How HashMap.put() methods works:**
+One can also sort the records of a table in their own preferred order using the CASE statement within the ORDER BY clause. 
 
-transient Entry[] table;
-		
-1. First of all, the key object is checked for null. If the key is null, the value is stored in table[0] position. 
-Because hashcode for null is always 0. 
-2. Then on next step, a hash value is calculated using the key’s hash code by calling its hashCode() method. 
-This hash value is used to calculate the index in the array for storing Entry object. 
-JDK designers well assumed that there might be some poorly written hashCode() functions that can return very high or low hash code value.
-To solve this issue, they introduced another hash() function and passed the object’s hash code to this hash() function 
-to bring hash value in the range of array index size.
-3. Now indexFor(hash, table.length) function is called to calculate exact index position for storing the Entry object.
-		
-**How collisions are resolved:**
+All the values are specified in the clause along with the position they are supposed to be sorted in; if the values are not given any number, they are automatically sorted in ascending order.
 
-as we know that two unequal objects can have the same hash code value, 
-how two different objects will be stored in same array location called bucket.
-The answer is LinkedList. If you remember, Entry class had an attribute "next". 
-This attribute always points to the next object in the chain. This is exactly the behavior of LinkedList.
-		
-1. So, in case of collision, Entry objects are stored in linked list form. 
-When an Entry object needs to be stored in particular index, HashMap checks whether there is already an entry?? 
-If there is no entry already present, the entry object is stored in this location. 
-If there is already an object sitting on calculated index, its next attribute is checked. 
-If it is null, and current entry object becomes next node in linkedlist. 
-If next variable is not null, procedure is followed until next is evaluated as null.
-			
-2. What if we add the another value object with same key as entered before. 
-Logically, it should replace the old value. How it is done? Well, after determining the index position of Entry object, 
-while iterating over linkedist on calculated index, HashMap calls equals method on key object for each entry object.
-			
-All these entry objects in linkedlist will have similar hashcode but equals() method will test for true equality. 
-If key.equals(k) will be true then both keys are treated as same key object. 
-This will cause the replacing of value object inside entry object only.
-			
-```java
-	How HashMap.get() methods works:
-		public V get(Object key) {
-			if (key == null)
-			return getForNullKey();
-			int hash = hash(key.hashCode());
-			for (Entry<K , V> e = table[indexFor(hash, table.length)]; e != null; e = e.next) {
-				Object k;
-				if (e.hash == hash && ((k = e.key) == key || key.equals(k)))
-					return e.value;
-			}
-			return null;
-		}
-```
+[to content](#SQL)
 
-[к оглавлению](#collections-light)
+## CREATE View
+Creating a view is simply creating a virtual table using a query. 
+
+A view is an SQL statement that is stored in the database with an associated name. 
+
+A view can contain rows from an existing table (all or selected). A view can be created from one or many tables which depends on the written SQL query to create a view. Unless indexed, a view does not exist in a database.
+
+Views, which are a type of virtual tables allow users to do the following −
++ Structure data in a way that users or classes of users find natural or intuitive.
++ Restrict access to the data in such a way that a user can see and (sometimes) modify exactly what they need and no more.
++ Summarize data from various tables which can be used to generate reports.
+
+**With Check Option**
+The WITH CHECK OPTION is a CREATE VIEW statement option. The purpose of the WITH CHECK OPTION is to ensure that all UPDATE and INSERTs satisfy the condition(s) in the view definition.
+
+If they do not satisfy the condition(s), the UPDATE or INSERT returns an error. The following code block has an example of creating same view CUSTOMERS_VIEW with the WITH CHECK OPTION.
+
+[to content](#SQL)
+
+## UPDATE View
+The SQL UPDATE Query is used to modify the existing records in a table or a view. 
+
+**Update View Statement**
+A view in a database can be updated under certain conditions which are given below −
+
++ The SELECT clause may not contain the keyword DISTINCT.
++ The SELECT clause may not contain summary functions.
++ The SELECT clause may not contain set functions.
++ The SELECT clause may not contain set operators.
++ The SELECT clause may not contain an ORDER BY clause.
++ The FROM clause may not contain multiple tables.
++ The WHERE clause may not contain subqueries.
++ The query may not contain GROUP BY or HAVING.
++ Calculated columns may not be updated.
++ All NOT NULL columns from the base table must be included in the view in order for the INSERT query to function.
+
+[to content](#SQL)
+
+## DROP or DELETE View
+The SQL DROP View statement is used to delete an existing view, along with its definition and other information. Once the view is dropped, all the permissions for it will also be removed. We can also use this statement to drop indexed views.
+
+Suppose a table is dropped using the DROP TABLE command and it has a view associated to it, this view must also be dropped explicitly using the DROP VIEW command.
+
+**Note** −
++ While trying to perform queries, the database engine checks all the objects referenced in that statement are valid and exist. So, if a view does not exist in the database, the DROP VIEW statement will throw an error.
++ To drop a table in a database, one must require ALTER permission on the said table and CONTROL permissions on the table schema.
+
+**The IF EXISTS clause**
+Instead of always checking if the view exists or not in a database before dropping it, you can use the IF EXISTS clause in the DROP VIEW statement.
+
+This clause, when specified in the DROP VIEW query, will automatically check whether the view exists in the current database and then drops it, if yes. If the view does not exist in the database, the query will be ignored.
+
+**Deleting Rows from a View**
+Instead of removing an entire view we can also delete selected rows of a view using the DELETE statement.
+
+[to content](#SQL)
+
+## Rename View
+There isn't a query in SQL Server that can rename a view directly. But, it does give you access to a stored procedure called **sp_rename** that can rename a view. You have to make sure there are no active transactions being performed on the view using its old name before renaming it.
+
+While you can rename the view, delete the existing view and then re-creating it with a new name is rather recommended.
+
+**Rename View Using sp_rename Stored Procedure**
+The **sp_rename** is a system stored procedure that can be used to rename various database objects including tables, columns, indexes, and constraints.
+
+**Rules and Best Practices to be followed while Renaming Views:**
++ Avoid renaming system views 
++ Update all references to the view 
++ Test thoroughly
++ Use a consistent naming convention
++ Backup the database
+
+[to content](#SQL)
