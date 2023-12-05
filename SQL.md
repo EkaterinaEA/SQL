@@ -432,11 +432,11 @@ You can also use DROP TABLE command to delete a table but it will remove the com
 ## TRUNCATE vs DELETE
 Even though the TRUNCATE and DELETE commands work similar logically, there are some major differences that exist between them. They are detailed in the table below.
 
-| DELETE| TRUNCATE | 
-| ---| ---| ---| ---| --- |
-| The DELETE command in SQL removes one or more rows from a table based on the conditions specified in a WHERE Clause| SQL's TRUNCATE command is used to remove all of the rows from a table, regardless of whether or not any conditions are met | 
-| It is a DML(Data Manipulation Language) command| It is a DDL(Data Definition Language) command | 
-| There is a need to make a manual COMMIT after making changes to the DELETE command, for the modifications to be committed| When you use the TRUNCATE command, the modifications made to the table are committed automatically | 
+| Delete| TRUNCATE |
+| ---| --- |
+| The DELETE command in SQL removes one or more rows from a table based on the conditions specified in a WHERE Clause| SQL's TRUNCATE command is used to remove all of the rows from a table, regardless of whether or not any conditions are met |
+| It is a DML(Data Manipulation Language) command| It is a DDL(Data Definition Language) command |
+| There is a need to make a manual COMMIT after making changes to the DELETE command, for the modifications to be committed| When you use the TRUNCATE command, the modifications made to the table are committed automatically |
 | It deletes rows one at a time and applies some criteria to each deletion| It removes all of the information in one go |
 | The WHERE clause serves as the condition in this case| There is no necessity of using a WHERE Clause | 
 | All rows are locked after deletion| TRUNCATE utilizes a table lock, which locks the pages so they cannot be deleted | 
@@ -451,25 +451,14 @@ Even though the TRUNCATE and DELETE commands work similar logically, there are s
 ## TRUNCATE vs DROP
 Unlike TRUNCATE that resets the table structure, DROP command completely frees the tablespace from the memory. They are both Data Definition Language operations as they interact with the definitions of database objects; which allows the database to automatically commit once these commands are executed with no chance to roll back.
 
-| DROP| TRUNCATE| 
-| ---| ---| ---| ---| --- |
-| The DROP command in SQL removes an entire table from a database including its definition, indexes, constraints, data etc| The TRUNCATE command is used to remove all of the rows from a table, regardless of whether or not any conditions are met and resets the table definition | 
-| It is a DDL(Data Definition Language) command| It is also a DDL(Data Definition Language) command | 
+| Drop| TRUNCATE |
+| ---| --- |
+| The DROP command in SQL removes an entire table from a database including its definition, indexes, constraints, data etc| The TRUNCATE command is used to remove all of the rows from a table, regardless of whether or not any conditions are met and resets the table definition |
+| It is a DDL(Data Definition Language) command| It is also a DDL(Data Definition Language) command |
 | The table space is completely freed from the memory| The table still exists in the memory |
 | All the integrity constraints are removed| The integrity constraints still exist in the table |
 | Requires ALTER and CONTROL permissions on the table schema and table respectively, to be able to perform this command| Only requires the ALTER permissions to truncate the table |
 | DROP command is much slower than TRUNCATE but faster than DELETE| It is faster than both DROP and DELETE commands |
-
-
-Получить информацию о применяемом уровне изоляции поможет метод Connection getTransactionIsolation().
-
-| Drop| TRUNCATE |
-| ---| --- |
-| The DROP command in SQL removes an entire table from a database including its definition, indexes, constraints, data etc| The TRUNCATE command is used to remove all of the rows from a table, regardless of whether or not any conditions are met and resets the table definition |
-| TRANSACTION_READ_COMMITTED| Supported| Prevented| Allowed| Allowed |
-| TRANSACTION_READ_UNCOMMITTED| Supported| Allowed| Allowed| Allowed |
-| TRANSACTION_REPEATABLE_READ| Supported| Prevented| Prevented| Allowed |
-| TRANSACTION_SERIALIZABLE| Supported| Prevented| Prevented| Prevented |
 
 [к оглавлению](#SQL)
 	
